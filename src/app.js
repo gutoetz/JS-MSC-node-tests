@@ -11,14 +11,12 @@ app.get('/', (_request, response) => {
 
 app.get('/products', product.getAllProducts);
 app.get('/products/:id', product.getProductsById);
+app.post('/products', product.createProduct);
+app.put('/products/:id', product.editProduct);
 
 app.get('/sales', sales.getAllSales);
 app.get('/sales/:id', sales.getSalesById);
-
-app.post('/products', product.createProduct);
-// app.post('/sales', product.createSales);
-
-app.put('/products/:id', product.editProduct);
+app.post('/sales', sales.createSale);
 
 app.use((error, req, res, _next) => {
   const newError = JSON.parse(error.message);

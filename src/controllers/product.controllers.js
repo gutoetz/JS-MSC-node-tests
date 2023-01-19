@@ -9,7 +9,7 @@ const getProductsById = async (req, res) => {
   const { id } = req.params;
   const products = await product.getProductsById(id);
   if (products.length < 1) return res.status(404).send({ message: 'Product not found' });
-  res.status(200).send(products);
+  res.status(200).send(...products);
 };
 
 const createProduct = async (req, res, next) => {
@@ -28,7 +28,7 @@ const editProduct = async (req, res, next) => {
       const { id } = req.params;
       const editedProduct = await product.editProduct(name, id);
       console.log(editedProduct);
-  res.status(200).send({ id, name });
+  res.status(200).send(editedProduct);
   } catch (error) {
     next(error);
   }

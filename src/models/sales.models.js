@@ -5,7 +5,6 @@ const getAllSales = async () => {
   FROM StoreManager.sales AS a INNER JOIN StoreManager.sales_products AS b ON a.id = b.sale_id 
   ORDER BY b.sale_id ASC, b.product_id ASC;`;
   const [allSales] = await connection.execute(query);
-  console.log(allSales);
   return allSales;
 };
 
@@ -17,14 +16,23 @@ const getSalesById = async (id) => {
   return products;
 };
 
-// const createSale = async (name) => {
-//   // const query = 'INSERT INTO StoreManager.products (name) VALUES (?)';
-//   // const [newProduct] = await connection.execute(query, [name]);
-//   // return newProduct.insertId;
-// };
+const createSaleId = async () => {
+  const query = 'INSERT INTO StoreManager.sales VALUES ();';
+  const [newSaleId] = await connection.execute(query);
+  return newSaleId.insertId;
+};
+
+const createSale = async (saleBody) => {
+  const { salesId, productId, quantity } = saleBody;
+  const query = `INSERT INTO StoreManager.sales_products
+  (sale_id, product_id, quantity) VALUES (?,?,?)`;
+  const [newProduct] = await connection.execute(query, [salesId, productId, quantity]);
+  if (newProduct.affectedRows === 1) return { productId, quantity };
+};
 
 module.exports = {
   getAllSales,
   getSalesById,
-  // createSale,
+  createSale,
+  createSaleId,
 };

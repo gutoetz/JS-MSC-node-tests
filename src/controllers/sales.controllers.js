@@ -12,18 +12,18 @@ const getSalesById = async (req, res) => {
   res.status(200).send(sale);
 };
 
-// const createSale = async (req, res, next) => {
-//   // try { 
-//   // const {algo} = req.body;
-//   // const newProduct = await sales.createProduct(algo);
-//   // res.status(201).json({ id: newProduct, algo });
-//   // } catch (error) {
-//   //   next(error);
-//   // }
-// };
+const createSale = async (req, res, next) => {
+  try { 
+    const salesBody = req.body;
+    const newSales = await sales.createSale(salesBody);
+  res.status(201).json(newSales);
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   getAllSales,
   getSalesById,
-  // createSale,
+  createSale,
 };
