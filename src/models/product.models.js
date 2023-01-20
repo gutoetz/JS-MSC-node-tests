@@ -30,9 +30,16 @@ const editProduct = async (name, id) => {
       );
 };
 
+const deleteProduct = async (id) => {
+  const query = 'DELETE FROM StoreManager.products WHERE id = ?';
+  const [deletedProduct] = await connection.execute(query, [id]);
+  if (deletedProduct.affectedRows === 0) throw new Error();
+  return 'Product Deleted';
+};
 module.exports = {
   getAllProducts,
   getProductsById,
   createProduct,
   editProduct,
+  deleteProduct,
 };

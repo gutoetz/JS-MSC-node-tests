@@ -17,7 +17,6 @@ const getProductsById = async (id) => {
 
 const createProduct = async (name) => {
   const { error } = productSchema.validate({ name });
-  console.log(error);
   if (error) {
     throw new Error(JSON.stringify({
       status: `${(error.details[0].type === 'string.min') ? 422 : 400}`,
@@ -42,9 +41,24 @@ const editProduct = async (name, id) => {
   return { ...editedProduct };
 };
 
+const deleteProduct = async (id) => {
+  const findProductById = await product.getProductsById(id);
+  if (findProductById.length < 1) {
+        throw new Error(
+          JSON.stringify({
+            status: 404,
+            message: 'Product not found',
+          }),
+        );
+  }
+  const deletedProduct = await product.deleteProduct(id);
+  return deletedProduct;
+};
+
 module.exports = {
   getAllProducts,
   getProductsById,
   createProduct,
   editProduct,
+  deleteProduct,
 };

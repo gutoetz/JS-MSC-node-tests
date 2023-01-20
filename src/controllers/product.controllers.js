@@ -22,13 +22,22 @@ const createProduct = async (req, res, next) => {
   }
 };
 
+const deleteProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await product.deleteProduct(id);
+    res.status(204).json();
+  } catch (error) {
+    next(error);
+  }
+};
+
 const editProduct = async (req, res, next) => {
     try { 
       const { name } = req.body;
       const { id } = req.params;
       const editedProduct = await product.editProduct(name, id);
-      console.log(editedProduct);
-  res.status(200).send(editedProduct);
+      if (editedProduct === 'Product Deleted') { res.status(200).send(editedProduct); }
   } catch (error) {
     next(error);
   }
@@ -39,4 +48,5 @@ module.exports = {
   getProductsById,
   createProduct,
   editProduct,
+  deleteProduct,
 };
