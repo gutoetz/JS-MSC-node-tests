@@ -9,6 +9,20 @@ const salesSchema = Joi.object({
 }).messages({
   'any.required': '{{#label}} is required',
 });
+const validateSchema = (salesBody) => {
+  salesBody.forEach((sale) => {
+    const salesArraySchema = Joi.array().items(salesSchema);
+    const { error } = salesArraySchema.validate([sale]);
+    if (error) {
+      throw new Error(
+        JSON.stringify({
+          status: `${error.details[0].type === 'any.required' ? 400 : 422}`,
+          message: error.message,
+        }),
+      );
+    }
+  });
+};
 
 const hasInvalidId = async (salesBody) => {
   const checkingSalesProductsIdPromises = await Promise.all(
@@ -53,8 +67,29 @@ const createSale = async (salesBody) => {
   return { id: salesId, itemsSold: newSalesPromisesResolve };
 };
 
+const deleteSale = async (id) => {
+  const deletingSale = await sales.deleteSale(id);
+  return deletingSale;
+};
+
+const editSale = async (salesBody, id) => {
+  await validateSchema(salesBody);
+  await hasInvalidId(salesBody);
+  const checkingId = await sales.getSalesById(id);
+  if (checkingId.length < 1) { throw new Error(); }
+  const newEditingSalePromises = await salesBody.map((sale) => sales.editSale({ ...sale, id }));
+  const ResolvedSales = await Promise.all(newEditingSalePromises);
+  const returnSales = {
+    saleId: id,
+    itemsUpdated: ResolvedSales,
+  };
+  return returnSales;
+};
+
 module.exports = {
   getAllSales,
   getSalesById,
   createSale,
+  deleteSale,
+  editSale,
 };

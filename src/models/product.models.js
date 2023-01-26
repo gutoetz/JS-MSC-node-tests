@@ -36,10 +36,24 @@ const deleteProduct = async (id) => {
   if (deletedProduct.affectedRows === 0) throw new Error();
   return 'Product Deleted';
 };
+
+const getBySearch = async (q) => {
+  const injection = `%${q}%`;
+  console.log(injection);
+  const query = 'SELECT * FROM StoreManager.products WHERE name LIKE (?)';
+  const [searchProduct] = await connection.execute(query, [injection]);
+    if (searchProduct.length < 1) {
+      const allProducts = await getAllProducts();
+      return allProducts;
+    }
+  return searchProduct;
+};
+
 module.exports = {
   getAllProducts,
   getProductsById,
   createProduct,
   editProduct,
   deleteProduct,
+  getBySearch,
 };

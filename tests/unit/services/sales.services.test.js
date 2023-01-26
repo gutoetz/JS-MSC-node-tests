@@ -82,82 +82,73 @@ describe("Product Service", function () {
     // });
   });
 
-  // describe("Testando rota edit", function () {
-  //   afterEach(() => {
-  //     sinon.restore();
-  //   });
+  describe("Testando rota edit", function () {
+    afterEach(() => {
+      sinon.restore();
+    });
 
-  //   it("Testando rota edit", async function () {
-  //     const name = "new Name";
-  //     const id = 2;
+    it("Testando rota edit", async function () {
+      const productId = 1
+      const quantity = 10;
+      const salesBody = [{productId, quantity}];
+      const id = 2;
 
-  //     sinon.stub(productsModel, "editProduct").resolves({ name, id });
+      sinon.stub(salesModel, "editSale").resolves({ productId,quantity });
 
-  //     const result = await productsService.editProduct(name, id);
+      const result = await salesService.editSale(salesBody, id);
 
-  //     expect(result).to.be.deep.equal({ name, id });
-  //   });
+      expect(result).to.be.deep.equal({
+        saleId: id,
+        itemsUpdated: salesBody,
+      });
+    });
 
-  //   it("Testando rota edit com erro de nString", async function () {
-  //     const newProduct = "as";
+    it("Testando rota edit com erro de nString", async function () {
+            const productId = 1;
+            const quantity = 10;
+            const salesBody = [{ quantity }];
+            const id = 2;
 
-  //     try {
-  //       const result = await productsService.editProduct(newProduct);
-  //     } catch (error) {
-  //       expect(error.message).to.be.deep.equal(
-  //         '{"status":"422","message":"\\"name\\" length must be at least 5 characters long"}'
-  //       );
-  //     }
-  //   });
-  //   it("rota edit deu errado", async function () {
-  //     const name = "new Name";
-  //     const id = 5;
-  //     const error = new Error(
-  //       JSON.stringify({
-  //         status: 404,
-  //         message: "Product not found",
-  //       })
-  //     );
-  //     sinon.stub(productsModel, "editProduct").throws(error);
-  //     try {
-  //       const result = await productsService.editProduct(name, id);
-  //     } catch (error) {
-  //       expect(error.message).to.be.deep.equal(
-  //         '{"status":404,"message":"Product not found"}'
-  //       );
-  //     }
-  //   });
-  // });
+      try {
+        const result = await salesService.editSale(salesBody, id);
+      } catch (error) {
+        expect(error.message).to.be.deep.equal(
+          '{"status":"400","message":"\\"productId\\" is required"}'
+        );
+      }
+    });
+    // it("rota edit deu errado", async function () {
+    //   const name = "new Name";
+    //   const id = 5;
+    //   const error = new Error(
+    //     JSON.stringify({
+    //       status: 404,
+    //       message: "Product not found",
+    //     })
+    //   );
+    //   sinon.stub(productsModel, "editProduct").throws(error);
+    //   try {
+    //     const result = await productsService.editProduct(name, id);
+    //   } catch (error) {
+    //     expect(error.message).to.be.deep.equal(
+    //       '{"status":404,"message":"Product not found"}'
+    //     );
+    //   }
+    // });
+  });
 
-  // describe("Testando rota delete", function () {
-  //   afterEach(() => {
-  //     sinon.restore();
-  //   });
+  describe("Testando rota delete", function () {
+    afterEach(() => {
+      sinon.restore();
+    });
 
-  //   it("Testando rota delete", async function () {
-  //     const id = 2;
-  //     sinon.stub(productsModel, "deleteProduct").resolves("Product Deleted");
+    it("Testando rota delete", async function () {
+      const id = 2;
+      sinon.stub(salesModel, "deleteSale").resolves("Sale Deleted");
 
-  //     const result = await productsService.deleteProduct(id);
+      const result = await salesService.deleteSale(id);
 
-  //     expect(result).to.be.deep.equal("Product Deleted");
-  //   });
-  //   it("rota delete deu errado", async function () {
-  //     const id = 4;
-  //     const error = new Error(
-  //       JSON.stringify({
-  //         status: 404,
-  //         message: "Product not found",
-  //       })
-  //     );
-  //     sinon.stub(productsModel, "deleteProduct").throws(error);
-  //     try {
-  //       const result = await productsService.deleteProduct(id);
-  //     } catch (error) {
-  //       expect(error.message).to.be.deep.equal(
-  //         '{"status":404,"message":"Product not found"}'
-  //       );
-  //     }
-  //   });
-  // });
+      expect(result).to.be.deep.equal("Sale Deleted");
+    });
+  });
 });

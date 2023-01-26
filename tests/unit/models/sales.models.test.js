@@ -63,59 +63,61 @@ describe("Sales Model", function () {
     });
   });
 
-  // describe("Testando rota edit", function () {
-  //   afterEach(() => {
-  //     sinon.restore();
-  //   });
+  describe("Testando rota edit", function () {
+    afterEach(() => {
+      sinon.restore();
+    });
 
-  //   it("Testando rota edit", async function () {
-  //     const name = "new Name";
-  //     const id = 2;
+    it("Testando rota edit", async function () {
+      const id = 1;
+      const productId = 2;
+      const quantity = 10;
+      const sale = { id, productId, quantity };
 
-  //     sinon.stub(connection, "execute").resolves([{ affectedRows: 1 }]);
+      sinon.stub(connection, "execute").resolves([{ affectedRows: 1 }]);
 
-  //     const result = await productsModel.editProduct(name, id);
+      const result = await salesModel.editSale(sale);
 
-  //     expect(result).to.be.deep.equal({ name, id });
-  //   });
-  //   it("rota edit deu errado", async function () {
-  //     const name = "new Name";
-  //     const id = 4;
+      expect(result).to.be.deep.equal({ productId, quantity });
+    });
+    // it("rota edit deu errado", async function () {
+    //   const name = "new Name";
+    //   const id = 4;
 
-  //     sinon.stub(connection, "execute").resolves([{ affectedRows: 0 }]);
-  //     try {
-  //       const result = await productsModel.editProduct(name, id);
-  //     } catch (error) {
-  //       expect(error.message).to.be.deep.equal(
-  //         '{"status":404,"message":"Product not found"}'
-  //       );
-  //     }
-  //   });
-  // });
+    //   sinon.stub(connection, "execute").resolves([{ affectedRows: 0 }]);
+    //   try {
+    //     const result = await productsModel.editProduct(name, id);
+    //   } catch (error) {
+    //     expect(error.message).to.be.deep.equal(
+    //       '{"status":404,"message":"Product not found"}'
+    //     );
+    //   }
+    // });
+  });
 
-  //   describe("Testando rota delete", function () {
-  //     afterEach(() => {
-  //       sinon.restore();
-  //     });
+  describe("Testando rota delete", function () {
+    afterEach(() => {
+      sinon.restore();
+    });
 
-  //     it("Testando rota delete", async function () {
-  //       const id = 2;
+    it("Testando rota delete", async function () {
+      const id = 2;
 
-  //       sinon.stub(connection, "execute").resolves([{ affectedRows: 1 }]);
+      sinon.stub(connection, "execute").resolves([{ affectedRows: 1 }]);
 
-  //       const result = await productsModel.deleteProduct(id);
+      const result = await salesModel.deleteSale(id);
 
-  //       expect(result).to.be.deep.equal("Product Deleted");
-  //     });
-  //     it("rota delete deu errado", async function () {
-  //       const id = 4;
+      expect(result).to.be.deep.equal("Sale Deleted");
+    });
+    it("rota delete deu errado", async function () {
+      const id = 4;
 
-  //       sinon.stub(connection, "execute").resolves([{ affectedRows: 0 }]);
-  //       try {
-  //         const result = await productsModel.deleteProduct(id);
-  //       } catch (error) {
-  //         expect(error).to.be.an('error');
-  //       }
-  //     });
-  //   });
+      sinon.stub(connection, "execute").resolves([{ affectedRows: 0 }]);
+      try {
+        const result = await salesModel.deleteSale(id);
+      } catch (error) {
+        expect(error).to.be.an("error");
+      }
+    });
+  });
 });

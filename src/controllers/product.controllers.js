@@ -43,10 +43,21 @@ const editProduct = async (req, res, next) => {
   }
 };
 
+const getBySearch = async (req, res) => {
+  const { query: { q } } = req;
+  try {
+    const searchProduct = await product.getBySearch(q);
+    res.status(200).json(searchProduct);
+  } catch (error) {
+    res.status(404).json('not found');
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProductsById,
   createProduct,
   editProduct,
   deleteProduct,
+  getBySearch,
 };

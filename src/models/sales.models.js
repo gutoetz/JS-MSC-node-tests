@@ -30,9 +30,28 @@ const createSale = async (saleBody) => {
   if (newProduct.affectedRows === 1) return { productId, quantity };
 };
 
+const deleteSale = async (id) => {
+  const query = 'DELETE FROM StoreManager.sales WHERE id = ?';
+  const [deletingSale] = await connection.execute(query, [id]);
+    if (deletingSale.affectedRows === 0) throw new Error();
+    return 'Sale Deleted';
+};
+
+const editSale = async (sale) => {
+  const { productId, quantity, id } = sale;
+  const query = `UPDATE StoreManager.sales_products SET quantity = ? 
+  WHERE sale_id = ? AND product_id = ?`;
+  const [editedSale] = await connection.execute(query, [quantity, id, productId]);
+  if (editedSale.affectedRows === 1) {
+    return { productId, quantity };
+  } throw new Error();
+};
+
 module.exports = {
   getAllSales,
   getSalesById,
   createSale,
   createSaleId,
+  deleteSale,
+  editSale,
 };
