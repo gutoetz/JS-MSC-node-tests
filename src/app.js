@@ -12,8 +12,8 @@ app.get('/', (_request, response) => {
 app.get('/products', product.getAllProducts);
 app.get('/products/:id', product.getProductsById);
 app.post('/products', product.createProduct);
-app.put('/products/:id', product.editProduct);
 app.delete('/products/:id', product.deleteProduct);
+app.put('/products/:id', product.editProduct);
 
 app.get('/sales', sales.getAllSales);
 app.get('/sales/:id', sales.getSalesById);

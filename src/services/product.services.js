@@ -38,7 +38,7 @@ const editProduct = async (name, id) => {
     );
   }
   const editedProduct = await product.editProduct(name, id);
-  return { ...editedProduct };
+  return editedProduct;
 };
 
 const deleteProduct = async (id) => {

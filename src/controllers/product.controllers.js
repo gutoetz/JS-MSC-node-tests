@@ -1,15 +1,15 @@
 const product = require('../services/product.services');
 
-const getAllProducts = async (req, res) => {
+const getAllProducts = async (_req, res) => {
   const products = await product.getAllProducts();
-  res.status(200).send(products);
+  res.status(200).json(products);
 };
 
 const getProductsById = async (req, res) => {
   const { id } = req.params;
   const products = await product.getProductsById(id);
-  if (products.length < 1) return res.status(404).send({ message: 'Product not found' });
-  res.status(200).send(...products);
+  if (products.length < 1) return res.status(404).json({ message: 'Product not found' });
+  res.status(200).json(...products);
 };
 
 const createProduct = async (req, res, next) => {
@@ -37,7 +37,7 @@ const editProduct = async (req, res, next) => {
       const { name } = req.body;
       const { id } = req.params;
       const editedProduct = await product.editProduct(name, id);
-      if (editedProduct === 'Product Deleted') { res.status(200).send(editedProduct); }
+      res.status(200).json(editedProduct);
   } catch (error) {
     next(error);
   }
